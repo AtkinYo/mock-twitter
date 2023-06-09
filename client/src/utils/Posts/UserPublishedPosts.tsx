@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { AuthData } from '../auth/Auth'
 import { Post } from '../../stories/Post'
 import { useQuery } from '@tanstack/react-query'
@@ -7,27 +6,22 @@ export const UsersPublishedPosts = () => {
   const { user: userData } = AuthData()
   const user = userData.userInfo
 
-  const [posts, setPosts] = useState([
-    {
-      authorId: 0,
-      content: '',
-      createdAt: '',
-      id: Number,
-      published: Boolean,
-    },
-  ])
-
-  const { isLoading } = useQuery(['data'], async () => {
+  const {
+    isFetching,
+    isError,
+    data: posts,
+  } = useQuery(['data'], async () => {
     const data = await (
       await fetch(`http://localhost:3001/posts/publish/${user.id}`)
     ).json()
+    const data2 = await (
+      await fetch(`http://localhost:3001/follow/posts/${user.id}`)
+    ).json()
 
-    console.log(data)
-
-    return setPosts(data)
+    return [data, data2].flat()
   })
 
-  if (isLoading) {
+  if (isFetching) {
     return (
       <span className="h-screen flex items-center justify-center text-xl text-gray-500">
         Loading...
@@ -35,31 +29,57 @@ export const UsersPublishedPosts = () => {
     )
   }
 
-  // useEffect(() => {
-  //   // Fetch data from the API
-  //   fetch(`http://localhost:3001/posts/publish/${user.id}`)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setPosts(data)
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error fetching API data:', error)
-  //     })
-  // }, [user.id])
+  if (posts?.length === 0) {
+    return (
+      <span className="h-screen flex items-center justify-center text-xl text-gray-500">
+        No Posts
+      </span>
+    )
+  }
+
+  if (isError) {
+    return (
+      <span className="h-screen flex items-center justify-center text-xl text-gray-500">
+        {isError}
+      </span>
+    )
+  }
 
   return (
     <div className="posts font-Inter">
-      {posts.map((userPost, i) => (
-        <Post
-          content={userPost.content}
-          iconBackgroundColor="bg-slate-400"
-          loggedInUser
-          published
-          timestamp={userPost.createdAt}
-          username={user.username || ''}
-          key={i}
-        />
-      ))}
+      {posts?.map(
+        (
+          userPost: {
+            content: string
+            createdAt: string
+            author:
+              | {
+                  id: number
+                  email: string
+                  username: string
+                  published: boolean
+                }
+              | undefined
+          },
+          i: number | undefined
+        ) => (
+          <Post
+            content={userPost.content}
+            iconBackgroundColor="bg-slate-400"
+            loggedInUser
+            published
+            timestamp={userPost.createdAt}
+            username={
+              !userPost.author?.username.length
+                ? user.username
+                : userPost.author?.username
+            }
+            key={i}
+          />
+        )
+      )}
     </div>
   )
 }
+
+// userPost.author?.username ||
