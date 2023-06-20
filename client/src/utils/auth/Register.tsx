@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault()
 
     try {
-      const body = { name, username, email, password, confirmPwd }
+      const body = { username, email, password, confirmPwd }
 
       const response = await fetch('http://localhost:3001/register', {
         method: 'POST',

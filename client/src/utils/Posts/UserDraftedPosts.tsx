@@ -20,6 +20,14 @@ export const UsersDraftedPosts = () => {
     )
   }
 
+  if (!posts.length) {
+    return (
+      <span className="text-gray-500 h-screen flex items-center justify-center text-xl">
+        Looks like you don't have any drafts here
+      </span>
+    )
+  }
+
   return (
     <div className="posts font-Inter">
       {posts.map(

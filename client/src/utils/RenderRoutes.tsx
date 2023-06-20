@@ -11,11 +11,13 @@ import { Home } from './auth/Home'
 import { Login } from './auth/Login'
 import { Drafts } from '../Components/Pages/Drafts'
 import { Profile } from '../Components/Pages/Profile'
+import { FollowPage } from '../Components/Pages/FollowPage'
 import { Followers } from '../Components/Pages/Followers'
+import { Following } from '../Components/Pages/Following'
+import { NewTweet } from '../Components/Pages/NewTweet'
 
 const NavigationRoutes = () => {
   const { isLoggedIn } = AuthData()
-  // prettier-ignore
 
   return (
     <Routes>
@@ -33,8 +35,13 @@ const NavigationRoutes = () => {
         <Route path="/" element={<Dashboard />}>
           <Route path="" element={<Feed />} />
           <Route path="drafts" element={<Drafts />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="followers" element={<Followers />} />
+          <Route path="profile/:username" element={<Profile />} />
+          <Route path="follows" element={<FollowPage />}>
+            <Route index={true} element={<Followers />} />
+            <Route path="followers" element={<Followers />} />
+            <Route path="following" element={<Following />} />
+          </Route>
+          <Route path="tweet" element={<NewTweet />} />
         </Route>
       </Route>
 

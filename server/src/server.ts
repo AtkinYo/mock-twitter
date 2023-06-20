@@ -65,6 +65,7 @@ app.post('/login', loginUser)
 
 // Post operations
 app.get('/posts/publish/:id', postController.getUsersPublishedPosts)
+app.get('/posts/:username', postController.getUserPostsByUsername)
 app.post('/post/publish/:id', postController.createPublishedPost)
 app.get('/posts/draft/:id', postController.getUsersDraftedPosts)
 app.post('/post/draft/:id', postController.createDraftedPost)
@@ -78,6 +79,10 @@ app.get('/followers/:id', followersController.getUserFollowers)
 app.get('/following/:id', followersController.getUserFollowing)
 app.delete('/follow/:id', followersController.unfollowUser)
 app.post('/follow/:id', followersController.followUser)
+
+// Profile Operations
+app.get('/profile/:username', userController.getUserProfile)
+app.post('/profile/update/:id', userController.editUserProfile)
 
 // Start server
 app.listen(PORT, () => {

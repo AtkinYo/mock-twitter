@@ -1,14 +1,18 @@
 import { HiHome } from 'react-icons/hi'
-import { BsChatDotsFill, BsFillChatQuoteFill } from 'react-icons/bs'
+import {
+  BsChatDotsFill,
+  BsFillChatQuoteFill,
+  BsBookmarkHeartFill,
+} from 'react-icons/bs'
 import { LuDoorOpen } from 'react-icons/lu'
 import { FaPeopleArrows, FaUser } from 'react-icons/fa'
-import BirdLogo from '../assets/images/twitter-logo-bird.png'
+import BirdLogo from '../assets/images/twitter-logo-bird-black.png'
 import { AuthData } from '../utils/auth/Auth'
 import { NavLink } from 'react-router-dom'
 import { Btn } from '../stories/Btn'
 
 export const SideNav = () => {
-  const { logout } = AuthData()
+  const { logout, user } = AuthData()
 
   const navLinkStyles = ({ isActive }: { isActive: boolean }) => {
     return {
@@ -33,11 +37,22 @@ export const SideNav = () => {
               <span className="hidden xl:block text-lg">Home</span>
             </NavLink>
           </li>
+
           <li className="w-full">
             <NavLink
               className="flex items-center justify-center xl:justify-between w-full p-3"
               style={navLinkStyles}
-              to={'drafts'}
+              to={'/likes'}
+            >
+              <BsBookmarkHeartFill size={24} />
+              <span className="hidden xl:block text-lg">Likes</span>
+            </NavLink>
+          </li>
+          <li className="w-full">
+            <NavLink
+              className="flex items-center justify-center xl:justify-between w-full p-3"
+              style={navLinkStyles}
+              to={'/drafts'}
             >
               <BsChatDotsFill size={24} />
               <span className="hidden xl:block text-lg">Drafts</span>
@@ -47,7 +62,7 @@ export const SideNav = () => {
             <NavLink
               className="flex items-center justify-center xl:justify-between w-full p-3"
               style={navLinkStyles}
-              to={'followers'}
+              to={'follows'}
             >
               <FaPeopleArrows size={24} />
               <span className="hidden xl:block text-lg">Followers</span>
@@ -57,7 +72,7 @@ export const SideNav = () => {
             <NavLink
               className="flex items-center justify-center xl:justify-between w-full p-3"
               style={navLinkStyles}
-              to={'profile'}
+              to={`profile/${user.userInfo.username}`}
             >
               <FaUser size={24} />
               <span className="hidden xl:block text-lg">Profile</span>

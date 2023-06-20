@@ -1,5 +1,5 @@
 import TwitLogo from '../../assets/images/twitter-logo.png'
-import { UsersPublishedPosts } from '../../utils/Posts/UserPublishedPosts'
+import { FeedPosts } from '../../utils/Posts/FeedPosts'
 
 export const Feed = () => {
   return (
@@ -13,7 +13,7 @@ export const Feed = () => {
             <img src={TwitLogo} width={100} />
           </div>
           <div>
-            <UsersPublishedPosts />
+            <FeedPosts />
           </div>
         </div>
       </div>

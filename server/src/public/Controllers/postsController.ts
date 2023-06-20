@@ -6,6 +6,7 @@ export {
   getDraftedPosts,
   getUsersPublishedPosts,
   getUsersDraftedPosts,
+  getUserPostsByUsername,
 }
 
 import { PrismaClient, Prisma } from '@prisma/client'
@@ -56,6 +57,7 @@ const deletePost = async (req: Request, res: Response) => {
 
   return res.status(200).json('Post Gone')
 }
+
 // Get all published posts
 const getPublishedPosts = async (req: Request, res: Response) => {
   const publishedPosts = await prisma.post.findMany({
@@ -87,10 +89,25 @@ const getUsersPublishedPosts = async (req: Request, res: Response) => {
       published: true,
       authorId: Number(id),
     },
+    include: {
+      author: true,
+    },
   })
 
   return res.status(200).json(userPublishedPosts)
 }
+// const getUsersPublishedPosts = async (req: Request, res: Response) => {
+//   const { id } = req.params
+
+//   const userPublishedPosts = await prisma.post.findMany({
+//     where: {
+//       published: true,
+//       authorId: Number(id),
+//     },
+//   })
+
+//   return res.status(200).json(userPublishedPosts)
+// }
 
 // Get all drafted posts by user
 const getUsersDraftedPosts = async (req: Request, res: Response) => {
@@ -104,4 +121,34 @@ const getUsersDraftedPosts = async (req: Request, res: Response) => {
   })
 
   return res.json(userDraftedPosts)
+}
+
+// Get posts by username
+const getUserPostsByUsername = async (req: Request, res: Response) => {
+  const { username } = req.params
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+      include: {
+        posts: {
+          where: {
+            published: true,
+          },
+        },
+      },
+    })
+
+    if (!user) {
+      throw new Error(username)
+      return res.status(400).json(username)
+    }
+
+    return res.status(200).json(user.posts)
+  } catch (error) {
+    console.error('Error retrieving user posts:', error)
+    throw error
+  }
 }

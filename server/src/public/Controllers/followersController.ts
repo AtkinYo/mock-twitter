@@ -37,7 +37,13 @@ const getUserFollowing = async (req: Request, res: Response) => {
 
   const user = await prisma.user.findUnique({
     where: { id: Number(id) },
-    include: { following: { include: { following: true } } },
+    include: {
+      following: {
+        include: {
+          following: true,
+        },
+      },
+    },
   })
 
   if (!user) {

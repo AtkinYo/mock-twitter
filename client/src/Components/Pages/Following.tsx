@@ -1,15 +1,15 @@
 import { useQuery } from 'react-query'
 import { FollowCard } from '../../stories/FollowCard'
 import { AuthData } from '../../utils/auth/Auth'
-import { getFollowers } from '../../api/FollowOperations'
+import { getFollowing } from '../../api/FollowOperations'
 
-export const Followers = () => {
+export const Following = () => {
   const { user: userData } = AuthData()
   const user = userData.userInfo
 
-  const { data: followers } = useQuery(
-    'Followers',
-    () => getFollowers(user.id || 0),
+  const { data: following } = useQuery(
+    'Following',
+    () => getFollowing(user.id || 0),
     {
       refetchOnMount: true,
     }
@@ -17,7 +17,7 @@ export const Followers = () => {
 
   return (
     <div className="text-black">
-      {followers?.data.map((f: { username: string }, i: number) => (
+      {following?.data.map((f: { username: string }, i: number) => (
         <FollowCard username={f.username} key={i} />
       ))}
     </div>

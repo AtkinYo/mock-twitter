@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,6 +14,7 @@ model Post {
   published Boolean  @default(false)
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
+  likes     Like[]
 }
 
 model Profile {
@@ -40,12 +38,23 @@ model User {
   email      String    @unique
   username   String    @unique
   name       String?
-  password   String
+  password   String    @ignore
   confirmPwd String?   @ignore
   posts      Post[]
   profile    Profile?
   followedBy Follows[] @relation("following")
   following  Follows[] @relation("follower")
+  likes      Like[]
 
   @@unique(fields: [email, password], name: "loginCredentials")
+}
+
+model Like {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+
+  @@unique([userId, postId])
 }

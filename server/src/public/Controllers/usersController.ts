@@ -4,7 +4,9 @@ export {
   deleteUser,
   createUser,
   getAllUsers,
+  getUserProfile,
   getLoggedInUser,
+  editUserProfile,
 }
 
 import { PrismaClient, Prisma } from '@prisma/client'
@@ -151,4 +153,46 @@ const deleteUser = async (req: Request, res: Response) => {
     await prisma.user.delete({ where: { id: Number(id) } }),
     res.status(200).json('User deleted')
   )
+}
+
+// Get Profile
+const getUserProfile = async (req: Request, res: Response) => {
+  const { username } = req.params
+
+  const getProfile = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+    select: {
+      profile: true,
+    },
+  })
+
+  if (!getProfile) {
+    return res.status(400).json(`User doesn't exist`)
+  } else {
+    return res.status(200).json(getProfile?.profile)
+  }
+}
+
+// Edit Profile
+const editUserProfile = async (req: Request, res: Response) => {
+  const { id } = req.params
+
+  const { bio } = req.body
+
+  const updateProfile = await prisma.profile.update({
+    where: {
+      userId: Number(id),
+    },
+    data: {
+      bio: bio,
+    },
+  })
+
+  if (!updateProfile) {
+    return res.status(400).json(`User doesn't exist`)
+  } else {
+    return res.status(200).json(updateProfile)
+  }
 }
