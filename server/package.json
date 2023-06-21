@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "nodemon --watch \"src/**\" --ext \"ts,json\" ts-node --exec \"ts-node src/server.ts\"",
     "dev:write": "npx ts-node index.ts",
-    "migration": "npx prisma migrate dev"
+    "migration": "npx prisma migrate dev",
+    "postinstall": "prisma generate",
+    "build": "prisma generate && vercel build"
   },
   "keywords": [],
   "author": "",
