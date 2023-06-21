@@ -6,7 +6,9 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 const getProfile = (username: string) => {
-  return axios.get(`http://localhost:3001/profile/${username}`)
+  return axios
+    .get(`http://localhost:3001/profile/${username}`)
+    .then((response) => response.data)
 }
 
 const getFollowingCount = (userId: number) => {
@@ -23,43 +25,23 @@ export const Profile = () => {
 
   const { username } = useParams()
 
-  const { data, isLoading } = useQuery(
-    ['ProfileData'],
-    () => getProfile(username || ''),
-    {
-      refetchOnMount: true,
-      refetchInterval: 10000,
-      placeholderData: {
-        data: {
-          bio: '',
-        },
-      },
-    }
-  )
+  const { data } = useQuery(['ProfileData'], () => getProfile(username || ''), {
+    refetchOnMount: true,
+    refetchInterval: 2000,
+  })
 
-  const profile = data?.data
-
-  const { id, bio, userId } = profile
+  const { id, bio, userId } = data
 
   const getFollowCounts = useQueries([
     {
       queryKey: ['Following-Count', userId],
-      queryFn: () => getFollowingCount(userId || 0),
+      queryFn: () => getFollowingCount(userId || 132),
     },
     {
       queryKey: ['Follower-Count', userId],
       queryFn: () => getFollowerCount(userId || 0),
     },
-
-    {
-      staleTime: Infinity,
-      cacheTime: 0,
-    },
   ])
-
-  if (isLoading) {
-    return <h2>Loading...</h2>
-  }
 
   const renderFollowCount = [
     getFollowCounts[0].data?.data.length || [],

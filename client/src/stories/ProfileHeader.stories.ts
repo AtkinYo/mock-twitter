@@ -43,8 +43,8 @@ export const Header: Story = {
   args: {
     username: 'username',
     bio: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. A beatae eum voluptatem officia maxime nesciunt cupiditate corporis repellat at. Explicabo ipsam eum quas nobis dolorem assumenda magnam corrupti! Consectetur, fugiat?',
-    followerCount: '123',
-    followingCount: '456',
+    followerCount: 123,
+    followingCount: 456,
     following: false,
     loggedUser: true,
     backgroundColor: 'bg-slate-400',
@@ -55,8 +55,8 @@ export const UserHeader: Story = {
   args: {
     username: 'username',
     bio: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. A beatae eum voluptatem officia maxime nesciunt cupiditate corporis repellat at. Explicabo ipsam eum quas nobis dolorem assumenda magnam corrupti! Consectetur, fugiat?',
-    followerCount: '123',
-    followingCount: '456',
+    followerCount: 123,
+    followingCount: 456,
     following: false,
     loggedUser: false,
     backgroundColor: 'bg-slate-400',
@@ -67,8 +67,8 @@ export const FollowingUserHeader: Story = {
   args: {
     username: 'username',
     bio: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. A beatae eum voluptatem officia maxime nesciunt cupiditate corporis repellat at. Explicabo ipsam eum quas nobis dolorem assumenda magnam corrupti! Consectetur, fugiat?',
-    followerCount: '123',
-    followingCount: '456',
+    followerCount: 123,
+    followingCount: 456,
     following: true,
     loggedUser: false,
     backgroundColor: 'bg-slate-400',
